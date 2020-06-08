@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>librarian {{user}}</title>
+</head>
+<style>
+    .table11_7 table {
+        width:100%;
+        margin:15px 0;
+        border:0;
+    }
+    .table11_7 th {
+        background-color:#00A5FF;
+        color:#FFFFFF
+    }
+    .table11_7,.table11_7 th,.table11_7 td {
+        font-size:0.95em;
+        text-align:center;
+        padding:4px;
+        border-collapse:collapse;
+    }
+    .table11_7 th,.table11_7 td {
+        border: 1px solid #2087fe;
+        border-width:1px 0 1px 0;
+        border:2px inset #ffffff;
+    }
+    .table11_7 tr {
+        border: 1px solid #ffffff;
+    }
+    .table11_7 tr:nth-child(odd){
+        background-color:#aae1fe;
+    }
+    .table11_7 tr:nth-child(even){
+        background-color:#ffffff;
+    }
+</style>
+<body background=http://attach.bbs.miui.com/forum/201208/01/194259jfqhhtwq8q0saqev.jpg style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
+
+<h1 style="color: rgb(48,54,54)"> librarian {{user}} 欢迎您！</h1>
+    <strong>请选择任务：</strong>
+    <select id="select"  style="width:155px;height:25px;border:1px solid #ccc;">
+        <option value="select_all_users"> 查看所有用户信息 </option>
+        <option value="select_user"> 查看在指定用户信息 </option>
+        <option value="register"> 注册用户 </option>
+        <option value="edit_pwd"> 修改用户密码 </option>
+        <option value="select_all_press"> 查看出版社记录 </option>
+        <option value="add_press"> 增加出版社记录 </option>
+        <option value="select_all_cate"> 查看书籍分类记录 </option>
+        <option value="add_cate"> 增加书籍分类记录 </option>
+        <option value="select_all_books"> 查看已有馆藏图书 </option>
+        <option value="select_book"> 查看指定书籍馆内状态，指定关键字 </option>
+        <option value="add_book"> 增加书籍记录 </option>
+        <option value="select_all_copy"> 查看所有书籍副本馆内状态 </option>
+        <option value="add_copy"> 增加书籍副本记录 </option>
+        <option value="select_all_borrow"> 查看所有借阅信息 </option>
+        <option value="select_borrow"> 查看指定借阅信息 </option>
+        <option value="borrow"> 增加借阅记录 </option>
+        <option value="delete_all_copies"> 删除某本书所有副本 </option>
+        <option value="delete_copy"> 删除仅删除某一副本书录,指定索书号 </option>
+        <option value="alter_class"> 改用户类型 </option>
+
+    </select>
+    <input type="button" onclick="display()" value="确定">
+    <br><br>
+
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_users" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_users">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_user" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>用户号</th>
+            </tr>
+            <input type="hidden" name="job" value="select_user">
+            <tr>
+                <td><input type="text" name="用户号"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="register" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>用户号</th>
+                <th>用户名</th>
+                <th>密码</th>
+                <th>用户类型</th>
+                <th>手机号</th>
+            </tr>
+            <input type="hidden" name="job" value="register">
+            <tr>
+                <td><input type="text" name="u_no"></td>
+                <td><input type="text" name="u_name"></td>
+                <td><input type="text" name="u_password"></td>
+                <td><input type="text" name="u_type" value="普通用户"></td>
+                <td><input type="text" name="u_phone"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="edit_pwd" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>用户号</th>
+                <th>新密码</th>
+            </tr>
+            <input type="hidden" name="job" value="edit_pwd">
+            <tr>
+                <td><input type="text" name="u_no"></td>
+                <td><input type="text" name="u_password"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_press" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_press">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="add_press" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>出版社名</th>
+                <th>地址</th>
+                <th>联系电话</th>
+            </tr>
+            <input type="hidden" name="job" value="add_press">
+            <tr>
+                <td><input type="text" name="p_name"></td>
+                <td><input type="text" name="p_address"></td>
+                <td><input type="text" name="p_phone"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_cate" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_cate">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="add_cate" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>分类号</th>
+                <th>类名</th>
+                <th>位置</th>
+            </tr>
+            <input type="hidden" name="job" value="add_cate">
+            <tr>
+                <td><input type="text" name="f_no"></td>
+                <td><input type="text" name="f_name"></td>
+                <td><input type="text" name="f_location"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_books" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_books">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_book" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>书名</th>
+            </tr>
+            <input type="hidden" name="job" value="select_book">
+            <tr>
+                <td><input type="text" name="书名"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="add_book" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>书号</th>
+                <th>序列号</th>
+                <th>书名</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>出版年份</th>
+                <th>价格</th>
+                <th>分类号</th>
+                <th>时间</th>
+                <th>位置</th>
+            </tr>
+            <input type="hidden" name="job" value="add_book">
+            <tr>
+                <td><input type="text" name="b_no"></td>
+                <td><input type="text" name="i_sno"></td>
+                <td><input type="text" name="b_name"></td>
+                <td><input type="text" name="b_author"></td>
+                <td><input type="text" name="b_publish"></td>
+                <td><input type="text" name="b_year"></td>
+                <td><input type="text" name="b_price"></td>
+                <td><input type="text" name="b_fno"></td>
+                <td><input type="text" name="c_enterdate"></td>
+                <td><input type="text" name="c_location"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_copy" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_copy">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="add_copy" style="display:none">
+            <table border="1" class=table11_7>
+            <tr>
+                <th>书号</th>
+                <th>序列号</th>
+                <th>时间</th>
+                <th>位置</th>
+            </tr>
+            <input type="hidden" name="job" value="add_copy">
+            <tr>
+                <td><input type="text" name="b_no"></td>
+                <td><input type="text" name="i_sno"></td>
+                <td><input type="text" name="c_enterdate"></td>
+                <td><input type="text" name="c_location"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_all_borrow" style="display:none">
+        <table border="1" class=table11_7>
+            <input type="hidden" name="job" value="select_all_borrow">
+            <input type="submit" value="确定">
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="select_borrow" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>用户号</th>
+            </tr>
+            <input type="hidden" name="job" value="select_borrow">
+            <tr>
+                <td><input type="text" name="用户号"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="borrow" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>索引号</th>
+                <th>用户号</th>
+            </tr>
+            <input type="hidden" name="job" value="borrow">
+            <tr>
+                <td><input type="text" name="d_ino"></td>
+                <td><input type="text" name="d_uno"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="delete_all_copies" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>书号</th>
+            </tr>
+            <input type="hidden" name="job" value="delete_all_copies">
+            <tr>
+                <td><input type="text" name="b_no"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="delete_copy" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>索引号</th>
+            </tr>
+            <input type="hidden" name="job" value="delete_copy">
+            <tr>
+                <td><input type="text" name="c_no"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    <form action="/librarian/{{user}}" method="post" id="alter_class" style="display:none">
+        <table border="1" class=table11_7>
+            <tr>
+                <th>用户号</th>
+                <th>用户类型</th>
+            </tr>
+            <input type="hidden" name="job" value="alter_class">
+            <tr>
+                <td><input type="text" name="u_no"></td>
+                <td><input type="text" name="u_type"></td>
+                <td><input type="submit" value="确定"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if table == 1 %}
+    <table border="1" class=table11_7>
+        <thead>
+            {% for title in titles %}
+                <th>{{title}}</th>
+            {% endfor %}
+        </thead>
+        <br>
+        <tbody>
+            {% for line in data %}
+            <tr>
+                {% for item in line %}
+                <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if table == 2 %}
+
+    <table border="1" class=table11_7>
+        <thead>
+            {% for title in titles %}
+                <th>{{title}}</th>
+            {% endfor %}
+            <th> 操作 </th>
+        </thead>
+        <br>
+        <tbody>
+                {% for line in data %}
+                    <tr>
+                        {% for item in line %}
+                        <form action="/librarian/{{user}}" method="post">
+                            <td>{{ item }}</td>
+                        {% endfor %}
+                        <td>
+                            <input type="submit" value="归还">
+                            <input type="hidden" name="job" value="return">
+                            <input type="hidden" name="d_ino" value="{{ line.2 }}">
+                            <input type="hidden" name="d_uno" value="{{ line.0 }}">
+                            <input type="hidden" name="d_lenddate" value="{{ line.4}}">
+                            <input type="hidden" name="d_state" value="{{ line.7 }}">
+                        </td>
+                        </form>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    </form>
+    {% endif %}
+
+    <!--报错-->
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>
+
+<script type="text/javascript">
+function display(){
+    var all=["select_all_users", "select_user", "register", "edit_pwd", "select_all_press", "add_press", "select_all_cate", "add_cate", "select_all_books", "select_book", "add_book", "select_all_copy", "add_copy", "select_all_borrow", "select_borrow", "borrow", "delete_all_copies", "delete_copy", "alter_class"];
+    ids=document.getElementById("select").value
+    for(var i=0; i<all.length; i++){
+	    document.getElementById(all[i]).style.display="none";
+    }
+    document.getElementById(ids).style.display="";
+}
+</script>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome</title>
+</head>
+
+
+<body background="http://attach.bbs.miui.com/forum/201210/31/200914wgvfz8bfwtftgubg.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
+   <h1 style="color: rgb(106,146,168)">图书管理系统</h1>
+   <h1 style="color: rgb(106,146,168)">登录界面</h1>
+    <form action="/login/" method="post">
+        {% csrf_token %}
+        <strong>身份选择：</strong>
+        <select name="role" style="width:155px;height:25px;border:1px solid #ccc;">
+          <option value ="librarian">图书馆管理员</option>
+          <option value ="reader">读者</option>
+        </select>
+        <br><br>
+        <strong>用户号：</strong><input type="text" name="user"/> <br><br>
+        <strong>密码：</strong><input type="text" name="pwd"/><br><br>
+        <div>&nbsp;</div>
+        <input type="submit" value="登录"/> <br>
+
+
+    </form>
+
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>

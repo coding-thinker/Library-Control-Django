@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>欢迎</h1>
+    <form action="/login/" method="post">
+        {% csrf_token %}
+        <select name="role">
+          <option value ="librarian">librarian</option>
+          <option value ="reader">reader</option>
+        </select> <br>
+        account <input type="text" name="user"/> <br>
+        pwd <input type="text" name="pwd"/> <br>
+        <input type="submit" value="login"/> <br>
+    </form>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>

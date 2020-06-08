@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reader {{user}}</title>
+</head>
+<body>
+    <h1> reader {{user}} </h1>
+     <form action="/reader/{{user}}" method="post">
+            <select name="job">
+                <option value ="user_info">查看自身用户信息</option>
+                <option value ="user_borrow_info">查看自身用户借阅记录</option>
+                <option value ="all_book">用户查看已有馆藏图书</option>
+                <option value ="all_borrow">用户查看所有书籍馆内状态</option>
+                <option value ="one_borrow">查看指定书籍馆内状态</option>
+                <option value ="edit_number">改电话号码</option>
+            </select> <br>
+            <input type="text" name="avg" /> <br>
+            <input type="submit" value="search">
+     </form>
+     <td></td>
+
+
+    <table border="1">
+        <thead>
+            {% for title in titles %}
+                <th>{{title}}</th>
+            {% endfor %}
+        </thead>
+        <br>
+        <tbody>
+            {% for line in data %}
+            <tr>
+                {% for item in line %}
+                <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>reader {{user}}</title>
+</head>
+<style>
+    .table11_7 table {
+        width:100%;
+        margin:15px 0;
+        border:0;
+    }
+    .table11_7 th {
+        background-color:#00A5FF;
+        color:#FFFFFF
+    }
+    .table11_7,.table11_7 th,.table11_7 td {
+        font-size:0.95em;
+        text-align:center;
+        padding:4px;
+        border-collapse:collapse;
+    }
+    .table11_7 th,.table11_7 td {
+        border: 1px solid #2087fe;
+        border-width:1px 0 1px 0;
+        border:2px inset #ffffff;
+    }
+    .table11_7 tr {
+        border: 1px solid #ffffff;
+    }
+    .table11_7 tr:nth-child(odd){
+        background-color:#aae1fe;
+    }
+    .table11_7 tr:nth-child(even){
+        background-color:#ffffff;
+    }
+</style>
+
+<body background="http://img.mp.itc.cn/upload/20170311/ad8a92b3a61741d392521e8c51ca663b_th.jpeg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
+    <h1 style="color: rgb(48,54,54)"> reader {{user}} 欢迎您！</h1>
+     <form action="/reader/{{user}} " method="post">
+         <strong>请选择任务：</strong>
+            <select name="job" style="width:155px;height:25px;border:1px solid #ccc;">
+                <option value ="user_info">查看自身用户信息</option>
+                <option value ="user_borrow_info">查看自身用户借阅记录</option>
+                <option value ="all_book">用户查看已有馆藏图书</option>
+                <option value ="all_borrow">用户查看所有书籍馆内状态</option>
+                <option value ="one_borrow">查看指定书籍馆内状态</option>
+                <option value ="edit_number">改电话号码</option>
+                <option value="User_borrow_max_person">查看自身借阅最多的书</option>
+                <option value="User_borrow_minutes_min">查看自身借阅时长最短的书</option>
+                <option value="Total_book_borrow_num_max">查看被借次数最多的书</option>
+                <option value="Total_user_borrow_num_max">借书次数最多的用户</option>
+                <option value="f_borrow">被借次数最多的类别</option>
+                <option value="edit_pwd">修改密码</option>
+            </select><input type="submit" value="确定">
+         <br><br>
+            <strong>请输入书籍名称：</strong>
+            <input type="text" name="avg1" />
+         <br><br>
+            <strong>请输入新的电话号码：</strong>
+            <input type="text" name="avg2" />
+         <br><br>
+            <strong>请输入新的密码：</strong>
+            <input type="text" name="avg3" />
+
+     </form>
+     <td></td>
+    {% if table == 1%}
+        <table border="1" class=table11_7>
+            <thead>
+                {% for title in titles %}
+                    <th>{{title}}</th>
+                {% endfor %}
+            </thead>
+            <br>
+            <tbody>
+                {% for line in data %}
+                <tr>
+                    {% for item in line %}
+                    <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+</body>
+</html>
+
+<script>
+function show(obj)
+{
+    document.getElementById("other").style.display=(obj.value==0)?"":"none"
+}
+</script>
