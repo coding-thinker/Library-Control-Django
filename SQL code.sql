@@ -315,14 +315,15 @@ END
 
 --添加副本
 CREATE PROCEDURE INPUTCOPY
-@书号 CHAR(10),@序列号 VARCHAR(20),
+@书号 VARCHAR(10),@序列号 VARCHAR(20),
 @入藏时间 DATETIME,@位置 VARCHAR(20)
 AS BEGIN 
 INSERT INTO INDEXNO VALUES(@书号,@序列号,@书号+@序列号)
 INSERT INTO Copy VALUES(@书号+@序列号,@入藏时间,'未借出',@位置)
 END
 --调用格式
---EXEC INPUTCOPY '(已知)','','(时间)',''
+--EXEC INPUTCOPY '书号(已知)','序列号','入藏时间(时间)','位置'
+
 
 /***********趣味榜单***********/
 /*************个人*************/
