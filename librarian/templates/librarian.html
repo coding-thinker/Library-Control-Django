@@ -99,8 +99,14 @@
             <tr>
                 <td><input type="text" name="u_no"></td>
                 <td><input type="text" name="u_name"></td>
-                <td><input type="text" name="u_password"></td>
-                <td><input type="text" name="u_type" value="普通用户"></td>
+                <td><input type="password" name="u_password"></td>
+                <td>
+		<select name="u_type">
+                       		 <option value="普通用户"> 普通用户 </option>
+                        		<option value="中级用户"> 中级用户 </option>
+                       		 <option value="高级用户"> 高级用户 </option>
+                    	</select>
+	</td>
                 <td><input type="text" name="u_phone"></td>
                 <td><input type="submit" value="确定"></td>
             </tr>
@@ -116,7 +122,7 @@
             <input type="hidden" name="job" value="edit_pwd">
             <tr>
                 <td><input type="text" name="u_no"></td>
-                <td><input type="text" name="u_password"></td>
+                <td><input type="password" name="u_password"></td>
                 <td><input type="submit" value="确定"></td>
             </tr>
         </table>
@@ -317,7 +323,13 @@
             <input type="hidden" name="job" value="alter_class">
             <tr>
                 <td><input type="text" name="u_no"></td>
-                <td><input type="text" name="u_type"></td>
+                <td>
+                    <select name="u_type">
+                        <option value="普通用户"> 普通用户 </option>
+                        <option value="中级用户"> 中级用户 </option>
+                        <option value="高级用户"> 高级用户 </option>
+                    </select>
+                </td>
                 <td><input type="submit" value="确定"></td>
             </tr>
         </table>

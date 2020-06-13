@@ -14,6 +14,21 @@ def verify(*avgs):
     return True
 
 
+def clear(iter):
+    result0 = []
+    for i in range(len(iter)):
+        result1 = []
+        for j in range(len(iter[i])):
+            if type(iter[i][j]) != str and iter[i][j] is not None:
+                result1.append(str(iter[i][j]))
+            elif iter[i][j] is None:
+                result1.append('N/A')
+            else:
+                result1.append(iter[i][j])
+        result0.append(result1)
+    return result0
+
+
 @csrf_exempt
 def default(request, user):
     if request.method == 'POST':
@@ -21,30 +36,35 @@ def default(request, user):
 
         conn = dbconn()
         conn.connect()
-        table = 1
+        table = 0
         if job == "user_info":
             titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='User_info') order by colorder")]
             data = conn.exec("SELECT * FROM User_info WHERE 用户号 = '%s'" % user)
+            table = 1
         elif job == "user_borrow_info":
             titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='User_borrow_info') order by colorder")]
             data = conn.exec("SELECT * FROM User_borrow_info WHERE  User_borrow_info.用户号 = '%s'" % user)
+            table = 1
         elif job == "all_book":
             titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='Book_info') order by colorder")]
             data = conn.exec("SELECT * FROM Book_info")
+            table = 1
         elif job == "all_borrow":
             titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='Book_borrow_info') order by colorder")]
             data = conn.exec("SELECT * FROM Book_borrow_info")
+            table = 1
         elif job == "one_borrow":
+            avg1 = request.POST.get("avg1", None)
             if verify(avg1):
-                avg1 = request.POST.get("avg1", None)
                 titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='Book_borrow_info') order by colorder")]
                 data = conn.exec("SELECT * FROM Book_borrow_info WHERE 书名 LIKE '%" + avg1 + "%'")
+                table = 1
             else:
                 messages.error(request, '值不能为空')
                 table = 0
         elif job == "edit_number":
+            avg2 = request.POST.get("avg2", None)
             if verify(avg2):
-                avg2 = request.POST.get("avg2", None)
                 conn.do("UPDATE UserList SET u_phone = '%s' WHERE u_no = '%s'" % (avg2, user))
                 messages.error(request, '完成')
                 table = 0
@@ -80,10 +100,9 @@ def default(request, user):
             else:
                 messages.error(request, '值不能为空')
                 table = 0
-
+        conn.close()
         if table:
-            dic = {"user": user, 'titles': titles, "data": data, "table": table}
-            print(dic)
+            dic = {"user": user, 'titles': titles, "data": clear(data), "table": table}
         else:
             dic = {"user": user, "table": table}
         return render(request, BASE_DIR + '/reader/templates/reader.html', dic)

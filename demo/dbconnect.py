@@ -7,7 +7,7 @@ class EmptyInfo(Exception):
 
 
 class dbconn(object):
-    def __init__(self, server='',db='', user='', pwd=''):
+    def __init__(self, server='DERLAPTOP',db='', user='', pwd=''):
         self.server = server
         self.db = db
         self.user = user

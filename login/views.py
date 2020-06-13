@@ -22,6 +22,7 @@ def default(request):
             if conn.exec("SELECT u_password FROM UserList WHERE u_no = '%s'" % user)[0][0] == pwd:
                 return HttpResponseRedirect("/%s/%s" % (role, user))
     messages.error(request, '用户名或密码不正确')
+    conn.close()
     return HttpResponseRedirect("/")
 
 

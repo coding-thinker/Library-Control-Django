@@ -13,8 +13,10 @@ def clear(iter):
     for i in range(len(iter)):
         result1 = []
         for j in range(len(iter[i])):
-            if type(iter[i][j]) != str:
+            if type(iter[i][j]) != str and iter[i][j] is not None:
                 result1.append(str(iter[i][j]))
+            elif iter[i][j] is None:
+                result1.append('N/A')
             else:
                 result1.append(iter[i][j])
         result0.append(result1)
@@ -155,14 +157,12 @@ def default(request, user):
         elif job == "select_all_borrow":
             titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='User_borrow_info') order by colorder")]
             data = conn.exec("SELECT * FROM User_borrow_info")
-            data = clear(data)
             table = 2
         elif job == "select_borrow":
             u_account = request.POST.get("用户号", None)
             if verify(u_account):
                 titles = [i[0] for i in conn.exec("select name from syscolumns where id=(select max(id) from sysobjects where xtype='v' and name='User_borrow_info') order by colorder")]
                 data = conn.exec("SELECT * FROM User_borrow_info WHERE  User_borrow_info.用户号 = '%s'" % u_account)
-                data = clear(data)
                 table = 2
             else:
                 messages.error(request, '值不能为空')
@@ -204,13 +204,17 @@ def default(request, user):
                 table = 0
         elif job == "alter_class":
             u_no = request.POST.get("u_no", None)
-            u_type = request.POST.get("u_type", None)
+            u_type = request.POST.get("u_type", None).strip()
             if verify(u_type, u_no):
-                conn.do("ALTER TABLE dbo.UserType NOCHECK CONSTRAINT ALL; ")
-                conn.do("UPDATE UserList SET u_type = '%s' WHERE u_no = '%s'" % (u_type, u_no))
-                conn.do("ALTER TABLE dbo.UserType CHECK CONSTRAINT ALL; ")
-                messages.error(request, '完成')
-                table = 0
+                if u_type not in ('普通用户', '中级用户', '高级用户'):
+                    messages.error(request, '用户类型不合法')
+                    table = 0
+                else:
+                    conn.do("ALTER TABLE dbo.UserType NOCHECK CONSTRAINT ALL; ")
+                    conn.do("UPDATE UserList SET u_type = '%s' WHERE u_no = '%s'" % (u_type, u_no))
+                    conn.do("ALTER TABLE dbo.UserType CHECK CONSTRAINT ALL; ")
+                    messages.error(request, '完成')
+                    table = 0
             else:
                 messages.error(request, '值不能为空')
                 table = 0
@@ -223,14 +227,16 @@ def default(request, user):
                 messages.error(request, '已经归还 不能重复归还')
             elif d_state == "未归还":
                 d_lenddate = d_lenddate.split('.')[0] + '.' + d_lenddate.split('.')[1][:3]
-                line = "UPDATE DataBorrow SET d_state = '已归还' WHERE d_ino = '%s' AND d_uno = '%s' AND d_lenddate = '%s'" % (d_ino, d_uno, d_lenddate)
-                print(line)
                 conn.do("UPDATE DataBorrow SET d_state = '已归还' WHERE d_ino = '%s' AND d_uno = '%s' AND d_lenddate = '%s'" % (d_ino, d_uno, d_lenddate))
                 messages.error(request, '完成')
+                date_actual = conn.exec("SELECT d_actual from DataBorrow WHERE d_ino = '%s' AND d_uno = '%s' AND d_lenddate = '%s'" % (d_ino, d_uno, d_lenddate))[0][0]
+                date_return = conn.exec("SELECT d_returndate from DataBorrow WHERE d_ino = '%s' AND d_uno = '%s' AND d_lenddate = '%s'" % (d_ino, d_uno, d_lenddate))[0][0]
+                if (date_actual > date_return) and (date_actual - date_return).days > 0:
+                    messages.error(request, '超期%ddays' % (date_actual - date_return).days)
             table = 0
-
+        conn.close()
         if table:
-            dic = {"user": user, 'titles': titles, "data": data, "table": table}
+            dic = {"user": user, 'titles': titles, "data": clear(data), "table": table}
         else:
             dic = {"user": user}
         return render(request, BASE_DIR + '/librarian/templates/librarian.html', dic)
